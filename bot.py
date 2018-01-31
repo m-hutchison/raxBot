@@ -2,6 +2,9 @@ import discord
 import asyncio
 import datetime
 import os
+import sys
+import random
+import imp
 
 from discord.ext import commands
 
@@ -53,11 +56,29 @@ async def on_message(message):
     if message.content.startswith('intro'):
         msg = 'Hello {0.author.mention} I am raxbot! Nice to meet you :D'.format(message)
         await client.send_message(message.channel, msg)	
-	
+		
+    if message.content.startswith('$killbot'):
+        msg = 'Terminating my session, goodbye.'.format(message)
+        await client.send_message(message.channel, msg)	
+        quit()
+        pass
+
+    if message.content.startswith('$memes'):
+        channel = client.get_channel("302251062134439936")
+        memePath = r'INSERT MEME DIRECTORY'
+        randMeme = os.path.join(memePath, random.choice(os.listdir(memePath))) 
+        await client.send_file(channel, randMeme, content='Incoming dank meme:')
+
+    if message.content.startswith('$reload'):
+        msg = 'Restarting my session.. beep boop.'.format(message)
+        await client.send_message(message.channel, msg)	
+        pass
+        quit()
+
 @client.event
 async def delete_messages(messages):
-	if message.content.startswith('$clear'):
-		async for msg in client.logs_from(message.channel, limit=100):
-			await client.delete_messages(messages)		
+    if message.content.startswith('$clear'):
+        async for msg in client.logs_from(message.channel, limit=100):
+            await message.delete(messages)
 
-client.run('CLIENT TOKEN HERE')
+client.run('INSERT TOKEN HERE')
